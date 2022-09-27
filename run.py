@@ -34,7 +34,7 @@ class Board:
         else:
             return "Miss"
 
-    def add_ship(self, x, y, type = "computer"):
+    def add_ship(self, x, y):
         if len(self.ships) >= self.num_ships:
             print("Error: you cannot add any more ships!")
         else:
@@ -48,6 +48,12 @@ def random_point(size):
     """
     return randint(0, size - 1)
 
+def rand_coordinates(size):
+    """
+    creates two random numbers within the range 0 and board size
+    """
+    return random_point(size), random_point(size)
+
 def valid_coordinates(x, y, size):
     """
     Verifies guess co-ordinates entered by player
@@ -56,7 +62,16 @@ def valid_coordinates(x, y, size):
     
 
 def populate_board(board):
-    return True #to get code to work
+    """
+    Position ships on grid in random positions
+    """
+    for _ in range(self.num_ships):
+        x, y = rand_coordinates(self.size)
+        while (x, y) in self.ships:
+            x, y = rand_coordinates(self.size)
+        self.add_ship(x,y)
+        
+
 
 
 
@@ -78,6 +93,24 @@ def make_guess():
    
 
 
+def welcome():
+    """
+    Display  instructions and information about game
+    """
+    print("="* 58)
+    print(" WELCOME TO BATTLESHIP GAME\n")
+    print(f"Board size: {size} X {size}.\n")
+    print(f"Number of ships : {num_ships}.\n")
+    print("="* 58)
+    print("Instructions for Battleship")
+    print("Player must guess co-ordinates of opponent's ships")
+    print(f"Objective is to hit all of opponent's {num_ships} ships before opponent hits yours.")
+    print(" Enter your guess as a row and colum number ")
+    print("Top left is row : 0, column : 0\n")
+    print("="* 58)
+    print("@ = a ship on the battle grid\n")
+    print("* = co-ordinates of a HIT")
+    print("X = co-ordinates of a MISS")
 
 def play_game(computer_board, Player_board):
     return True #to get code to work
@@ -92,28 +125,36 @@ def new_game():
     num_ships = 4
     scores["computer"] = 0
     scores["player"] = 0
-    print("-" * 35)
-    print(" Welcome to ULIIMATE BATTLESHIPS!!")
+    print("=" * 58)
+    print(" Welcome to BATTLESHIPS!!")
     print(f" Board Size: {size}. Number of ships: {num_ships}")
-    print("Top left corner is row: 0, col: 0")
-    print("-" * 35)
-    player_name = input("Please enter your name:\n")
-    print("-" * 35)
+    print(" Top left corner is row: 0, col: 0")
+    print("=" * 58)
+    print("=" * 24 + " Legend " + "=" * 24)
+    player_name = input(" Please enter your name:\n")
+    print("=" * 58)
 
-    computer_board = Board(size, num_ships, "Computer", type = "computer")
-    Player_board = Board(size, num_ships, player_name, type = "player")
+    
+    computer_board = Board(size, num_ships, "Computer")
+    
+    Player_board = Board(size, num_ships, player_name)
+    computer_board.print()
+    print("="* 58)
+    Player_board.print()
 
-    for _ in range(num_ships):
-        populate_board(player_board)
-        populate_board(computer_board)
 
-    play_game(computer_board, Player_board)
+    #for _ in range(num_ships):
+    #    populate_board(player_board)
+    #    populate_board(computer_board)
 
-#new_game()
+    #play_game(computer_board, Player_board)
+    
+new_game()
 size = 5
 x, y = make_guess()
 if valid_coordinates(x, y, size):
     print("co-ordinitates are within range")
+
 
 
 
