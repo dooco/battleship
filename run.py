@@ -1,6 +1,5 @@
-from asyncio.constants import SENDFILE_FALLBACK_READBUFFER_SIZE
-from os import PRIO_USER
-from random import randint, random
+
+from random import randint
 from unicodedata import name # Import random function so that positions on board 
 # can be randomised.
 # 
@@ -49,18 +48,39 @@ def random_point(size):
     """
     return randint(0, size - 1)
 
-def valid_coordinates(x, y, board):
-
+def valid_coordinates(x, y, size):
+    """
+    Verifies guess co-ordinates entered by player
+    """
+    return ((0 <= x < size) and (0 <= y < size))
+    
 
 def populate_board(board):
+    return True #to get code to work
 
 
 
-def make_guess(board):
+def make_guess():
+    """
+    Get x and y guess co-ordinates from player
+    """
+    while True:
+        try:
+            print("=" * 58)
+            x = int(input(f"Enter row in range 0 - {size - 1}: \n"))
+            y = int(input(f"Enter column in range 0 - {size - 1}: \n"))
+            break
+        except ValueError:
+            print("Error, Row and Column must be valid numbers\n")
+    return(x, y)
+    
+
+   
 
 
 
 def play_game(computer_board, Player_board):
+    return True #to get code to work
 
 
 def new_game():
@@ -89,6 +109,11 @@ def new_game():
 
     play_game(computer_board, Player_board)
 
-new_game()
+#new_game()
+size = 5
+x, y = make_guess()
+if valid_coordinates(x, y, size):
+    print("co-ordinitates are within range")
+
 
 
