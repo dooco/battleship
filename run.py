@@ -1,8 +1,62 @@
-
 from random import randint
-from unicodedata import name # Import random function so that positions on board 
+# Import random function so that positions on board 
 # can be randomised.
 # 
+ALPHA_NUMERO = {
+    "A": 0,
+    "B": 1,
+    "C": 2,
+    "D": 3,
+    "E": 4,
+    "F": 5,
+    "G": 6,
+    "H": 7
+}
+board_size = 8
+PLAYER_BOARD = [[" "]*8 for _ in range(board_size)]
+PLAYER_BOARD_GUESS = [[" "]*8 for _ in range(board_size)]
+COMPUTER_BOARD = [[" "]*8 for _ in range(board_size)]
+COMPUTER_BOARD_GUESS = [[" "]*8 for _ in range(board_size)]
+SHIPS = [2,3,3,4,5]
+
+def show_board(board):
+    """
+    Makes and shows board for player to see progress
+    """
+
+    if board == PLAYER_BOARD or board == PLAYER_BOARD_GUESS:
+        print("  A B C D E F G H")
+        print("  - - - - - - - -")
+        row_number = 1
+        for row in board:
+            print("%d|%s" % (row_number,f"|".join(row)))
+            row_number +=1
+
+def place_ships(board):
+    """
+    Places ships on board
+    """
+    for ship in SHIPS:
+        while True:
+            if board == COMPUTER_BOARD:
+                direction = random.choice(["H","V"])
+                row, col = random.randint(0,board_size-1), randint(0, board_size-1)
+                #check if positions is avaiable function call
+                if direction == "H":
+                    for i in range(col, col + ship):
+                        board[row][i] = "X"
+                    else
+                    for i in range(row, row + ship):
+                        board[i][col] = "X"
+
+                        break
+
+        
+
+ 
+
+
+
 scores = {"computer":0, "player":0}
 
 class Board:
@@ -11,7 +65,7 @@ class Board:
     and the board type: player or computer
     """
 
-    def __init__(self, size, num_ships, type):
+    def __init__(self, size, num_ships, name, type):
         self.size = size
         self.board = [["." for x in range(size)] for y in range(size)]
         self.num_ships = num_ships
@@ -41,18 +95,32 @@ class Board:
             self.ships.append((x,y))
             if self.type == "player":
                 self.board[x][y] = "@"
+    
+    def populate_board(size):
+        """
+        Position ships on grid in random positions
+        """
+    
+        x, y = rand_coordinates(size)
+        while (x, y) in self.ships:
+            x, y = rand_coordinates(self.size)
+        self.add_ship(x,y)
+
 
 def random_point(size):
     """
     function to return random integer between 0 and size
     """
+
     return randint(0, size - 1)
 
 def rand_coordinates(size):
     """
     creates two random numbers within the range 0 and board size
     """
-    return random_point(size), random_point(size)
+    randomized = randint(0, size)
+    print((randomized))
+    return randint(0, size-1), randint(0, size-1)
 
 def valid_coordinates(x, y, size):
     """
@@ -61,15 +129,7 @@ def valid_coordinates(x, y, size):
     return ((0 <= x < size) and (0 <= y < size))
     
 
-def populate_board(board):
-    """
-    Position ships on grid in random positions
-    """
-    for _ in range(self.num_ships):
-        x, y = rand_coordinates(self.size)
-        while (x, y) in self.ships:
-            x, y = rand_coordinates(self.size)
-        self.add_ship(x,y)
+
         
 
 
@@ -135,18 +195,23 @@ def new_game():
     print("=" * 58)
 
     
-    computer_board = Board(size, num_ships, "Computer")
+    computer_board = Board(size, num_ships, "Computer", type="computer")
     
-    Player_board = Board(size, num_ships, player_name)
+    player_board = Board(size, num_ships, player_name, type="player")
+
+    show_board(PLAYER_BOARD)
+    
+
+
+    for _ in range(num_ships):
+        populate_board(player_board)
+        populate_board(computer_board)
+    
     computer_board.print()
+
     print("="* 58)
+    
     Player_board.print()
-
-
-    #for _ in range(num_ships):
-    #    populate_board(player_board)
-    #    populate_board(computer_board)
-
     #play_game(computer_board, Player_board)
     
 new_game()
