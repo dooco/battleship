@@ -1,4 +1,4 @@
-from random import randint
+import random
 # Import random function so that positions on board 
 # can be randomised.
 # 
@@ -24,7 +24,7 @@ def show_board(board):
     Makes and shows board for player to see progress
     """
 
-    if board == PLAYER_BOARD or board == PLAYER_BOARD_GUESS:
+    if board == PLAYER_BOARD or board == PLAYER_BOARD_GUESS or board == COMPUTER_BOARD:
         print("  A B C D E F G H")
         print("  - - - - - - - -")
         row_number = 1
@@ -40,16 +40,22 @@ def place_ships(board):
         while True:
             if board == COMPUTER_BOARD:
                 direction = random.choice(["H","V"])
-                row, col = random.randint(0,board_size-1), randint(0, board_size-1)
+                row, col = random.randint(0,board_size-1), random.randint(0, board_size-1)
                 #check if positions is avaiable function call
+                print(direction,row,col)
                 if direction == "H":
                     for i in range(col, col + ship):
                         board[row][i] = "X"
-                    else
+                else:
                     for i in range(row, row + ship):
                         board[i][col] = "X"
+                break
+            else:
+                print("Player must select ships")
+                break
 
-                        break
+        
+        
 
         
 
@@ -195,12 +201,14 @@ def new_game():
     print("=" * 58)
 
     
-    computer_board = Board(size, num_ships, "Computer", type="computer")
+    #computer_board = Board(size, num_ships, "Computer", type="computer")
     
-    player_board = Board(size, num_ships, player_name, type="player")
+    #player_board = Board(size, num_ships, player_name, type="player")
 
+    board = PLAYER_BOARD
+    place_ships(board)
     show_board(PLAYER_BOARD)
-    
+    show_board(COMPUTER_BOARD)
 
 
     for _ in range(num_ships):
