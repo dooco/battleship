@@ -39,27 +39,60 @@ def place_ships(board):
     for ship in SHIPS:
         while True:
             if board == COMPUTER_BOARD:
-                direction = random.choice(["H","V"])
-                row, col = random.randint(0,board_size-1), random.randint(0, board_size-1)
-                #check if positions is avaiable function call
-                print(direction,row,col)
-                if direction == "H":
-                    for i in range(col, col + ship):
-                        board[row][i] = "X"
-                else:
-                    for i in range(row, row + ship):
-                        board[i][col] = "X"
-                break
+                direction = random.choice(["H", "V"])
+                row = random.randint(0, board_size-1)
+                col = random.randint(0, board_size-1)
+                if make_sure_ship_fits(board, ship, direction, row, col):
+                    if not no_ship_overlap(board, ship, direction, row, col):
+                        print(direction, row, col)
+                        if direction == "H":
+                            for i in range(col, col + ship):
+                                board[row][i] = "X"
+                        else:
+                            for i in range(row, row + ship):
+                                board[i][col] = "X"
+                        break
             else:
                 print("Player must select ships")
                 break
+            
 
-        
-        
+def make_sure_ship_fits(board, ship, direction, row, col):
+    """
+    Checks ship co-ordinates doesn't exceed boudaries of board
+    """
+    if board == COMPUTER_BOARD:
+        if direction == "H":
+            if col + ship > board_size:
+                return False
+            else:
+                return True
+        else:
+            if row + ship > board_size:
+                return False
+            else:
+                return True
 
-        
+def no_ship_overlap(board, ship, direction, row, col):
+    """
+    Checks this ship doesn't overlap previous ships placed
+    """
+    if board == COMPUTER_BOARD:
+        if direction == "H":
+            for i in range(col, col + ship):
+                if board[row][i] == "X":
+                    return True
+        else:
+            for i in range(row, row + ship):
+                if board[i][col] == "X":
+                    return True
+        return False
+    else:
+        print("player board overlap check")
+        return False
 
- 
+    
+
 
 
 
@@ -205,7 +238,7 @@ def new_game():
     
     #player_board = Board(size, num_ships, player_name, type="player")
 
-    board = PLAYER_BOARD
+    board = COMPUTER_BOARD
     place_ships(board)
     show_board(PLAYER_BOARD)
     show_board(COMPUTER_BOARD)
