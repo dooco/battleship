@@ -57,7 +57,17 @@ def place_ships(board):
                         break
             else:
                 print(f"Place your ship size: {ship} on grid")
-                get_players_ship_position()
+                direction, row, col = get_players_ship_position()
+                if make_sure_ship_fits(board, ship, direction, row, col):
+                    if not no_ship_overlap(board, ship, direction, row, col):
+                        if direction == "H":
+                            for i in range(col, col + ship):
+                                board[row][i] = "X"
+                            else:
+                                for i in range(row, row + ship):
+                                    board[i][col] = "X"
+                            break
+                                
                 
                 break
             
@@ -122,7 +132,7 @@ def get_players_ship_position():
 
     while True:
         try:
-            col = input("Enter column you would like to place ship (A to H").upper()
+            col = input("Enter column you would like to place ship (A to H\n").upper()
             while col not in ALPHA_NUMERO.keys():
                 print("Wrong input, enter A to H\n")
                 break
@@ -131,7 +141,7 @@ def get_players_ship_position():
                 break
         except ValueError:
             print("Wrong input, enter letter between A and H\n")
-    return row, col
+    return direction, row, col
 
 
 
