@@ -12,12 +12,15 @@ ALPHA_NUMERO = {
     "G": 6,
     "H": 7
 }
+ONE_TO_EIGHT = ("1", "2", "3", "4", "5", "6", "7", "8")
 board_size = 8
 PLAYER_BOARD = [[" "]*8 for _ in range(board_size)]
 PLAYER_BOARD_GUESS = [[" "]*8 for _ in range(board_size)]
 COMPUTER_BOARD = [[" "]*8 for _ in range(board_size)]
 COMPUTER_BOARD_GUESS = [[" "]*8 for _ in range(board_size)]
 SHIPS = [2,3,3,4,5]
+
+  
 
 def show_board(board):
     """
@@ -53,7 +56,9 @@ def place_ships(board):
                                 board[i][col] = "X"
                         break
             else:
-                print("Player must select ships")
+                print(f"Place your ship size: {ship} on grid")
+                get_players_ship_position()
+                
                 break
             
 
@@ -89,7 +94,47 @@ def no_ship_overlap(board, ship, direction, row, col):
         return False
     else:
         print("player board overlap check")
+
         return False
+
+def get_players_ship_position():
+    while True:
+        try:
+            direction = input("What direction would you like to position your ship, (H) horizontal (V) Vertical\n").upper()
+            while direction not in ("H", "V"):
+                print("Incorrect choice, only H or V")
+                break
+            if direction =="H" or direction == "V":
+                break
+        except ValueError:
+            print("Wrong nput Try 'H' or 'V'\n")
+    while True:
+        try:
+            row = input(("Enter row you would like to place ship (1-8) \n"))
+            while row not in ONE_TO_EIGHT:
+                print("Wrong input, select a number between 1 and 8\n")
+                break
+            if row in ONE_TO_EIGHT:
+                row = int(row) - 1
+                break
+        except ValueError:
+            print("Wrong input, select a number between 1 and 8\n ")
+
+    while True:
+        try:
+            col = input("Enter column you would like to place ship (A to H").upper()
+            while col not in ALPHA_NUMERO.keys():
+                print("Wrong input, enter A to H\n")
+                break
+            if col in ALPHA_NUMERO.keys():
+                col = ALPHA_NUMERO[col]
+                break
+        except ValueError:
+            print("Wrong input, enter letter between A and H\n")
+    return row, col
+
+
+
 
     
 
@@ -239,6 +284,8 @@ def new_game():
     #player_board = Board(size, num_ships, player_name, type="player")
 
     board = COMPUTER_BOARD
+    place_ships(board)
+    board = PLAYER_BOARD
     place_ships(board)
     show_board(PLAYER_BOARD)
     show_board(COMPUTER_BOARD)
