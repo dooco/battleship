@@ -20,20 +20,21 @@ COMPUTER_BOARD = [[" "]*8 for _ in range(board_size)]
 COMPUTER_BOARD_GUESS = [[" "]*8 for _ in range(board_size)]
 SHIPS = [2,3,3,4,5]
 
-  
 
 def show_board(board):
     """
     Makes and shows board for player to see progress
     """
+    print(board[0])
 
     if board == PLAYER_BOARD or board == PLAYER_BOARD_GUESS or board == COMPUTER_BOARD:
         print("  A B C D E F G H")
         print("  - - - - - - - -")
         row_number = 1
         for row in board:
-            print("%d|%s" % (row_number,f"|".join(row)))
-            row_number +=1
+            print(f"%d|%s" % (row_number, "|".join(row)))
+            row_number += 1
+
 
 def place_ships(board):
     """
@@ -62,13 +63,12 @@ def place_ships(board):
                     if not no_ship_overlap(board, ship, direction, row, col):
                         if direction == "H":
                             for i in range(col, col + ship):
+                                print(row, i)
                                 board[row][i] = "X"
                             else:
                                 for i in range(row, row + ship):
                                     board[i][col] = "X"
                             break
-                                
-                
                 break
             
 
@@ -87,6 +87,19 @@ def make_sure_ship_fits(board, ship, direction, row, col):
                 return False
             else:
                 return True
+    else:
+        if direction == "H":
+            if col + ship > board_size:
+                print("The ship cannot go of the board\nTry another location\n")
+                return False
+            else:
+                return True
+        else:
+            if row + ship > board_size:
+                print("The ship cannot go of the board\nTry another location\n")
+                return False
+
+
 
 def no_ship_overlap(board, ship, direction, row, col):
     """
@@ -106,6 +119,7 @@ def no_ship_overlap(board, ship, direction, row, col):
         print("player board overlap check")
 
         return False
+
 
 def get_players_ship_position():
     while True:
@@ -144,14 +158,8 @@ def get_players_ship_position():
     return direction, row, col
 
 
+scores = {"computer": 0, "player": 0}
 
-
-    
-
-
-
-
-scores = {"computer":0, "player":0}
 
 class Board:
     """
@@ -295,10 +303,11 @@ def new_game():
 
     board = COMPUTER_BOARD
     place_ships(board)
+    show_board(COMPUTER_BOARD)
     board = PLAYER_BOARD
     place_ships(board)
-    show_board(PLAYER_BOARD)
-    show_board(COMPUTER_BOARD)
+    show_board(board)
+    
 
 
     for _ in range(num_ships):
