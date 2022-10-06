@@ -14,12 +14,22 @@ ALPHA_NUMERO = {
 }
 ONE_TO_EIGHT = ("1", "2", "3", "4", "5", "6", "7", "8")
 BOARD_SIZE = 8
-PLAYER_BOARD = [[" "]*8 for _ in range(BOARD_SIZE)]
-print(len(PLAYER_BOARD))
-PLAYER_BOARD_GUESS = [[" "]*8 for _ in range(BOARD_SIZE)]
-COMPUTER_BOARD = [[" "]*8 for _ in range(BOARD_SIZE)]
-COMPUTER_BOARD_GUESS = [[" "]*8 for _ in range(BOARD_SIZE)]
 SHIPS = [2,3,3,4,5]
+player_board = [[" "]*8 for _ in range(BOARD_SIZE)]
+player_board_guess = [[" "]*8 for _ in range(BOARD_SIZE)]
+computer_board = [[" "]*8 for _ in range(BOARD_SIZE)]
+computer_board_guess = [[" "]*8 for _ in range(BOARD_SIZE)]
+
+def reset():
+    """
+    Reset boards data for start and to play again
+    """
+    player_board = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
+    player_board_guess = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
+    computer_board = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
+    computer_board_guess = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
+    print(computer_board)
+
 
 
 def show_board(board):
@@ -28,7 +38,7 @@ def show_board(board):
     """
     print(board[0])
 
-    if board == PLAYER_BOARD or board == PLAYER_BOARD_GUESS or board == COMPUTER_BOARD:
+    if board == player_board or board == player_board_guess or board == computer_board:
         print("  A B C D E F G H")
         print("  - - - - - - - -")
         row_number = 1
@@ -43,13 +53,12 @@ def place_ships(board):
     """
     for ship in SHIPS:
         while True:
-            if board == COMPUTER_BOARD:
+            if board == computer_board:
                 direction = random.choice(["H", "V"])
                 row = random.randint(0, BOARD_SIZE-1)
                 col = random.randint(0, BOARD_SIZE-1)
                 if make_sure_ship_fits(board, ship, direction, row, col):
                     if not no_ship_overlap(board, ship, direction, row, col):
-                        print(direction, row, col)
                         if direction == "H":
                             for i in range(col, col + ship):
                                 board[row][i] = "X"
@@ -60,12 +69,10 @@ def place_ships(board):
             else:
                 print(f"Place your ship size: {ship} on grid")
                 direction, row, col = get_players_ship_position()
-                print(direction, row, col)
                 if make_sure_ship_fits(board, ship, direction, row, col):
                     if not no_ship_overlap(board, ship, direction, row, col):
                         if direction == "H":
                             for i in range(col, col + ship):
-                                print(row, i)
                                 board[row][i] = "X"
                         else:
                             for i in range(row, row + ship):
@@ -78,7 +85,7 @@ def make_sure_ship_fits(board, ship, direction, row, col):
     """
     Checks ship co-ordinates doesn't exceed boudaries of board
     """
-    if board == COMPUTER_BOARD:
+    if board == computer_board:
         if direction == "H":
             if col + ship > (BOARD_SIZE - 1):
                 return False
@@ -109,7 +116,7 @@ def no_ship_overlap(board, ship, direction, row, col):
     """
     Checks this ship doesn't overlap previous ships placed
     """
-    if board == COMPUTER_BOARD:
+    if board == computer_board:
         if direction == "H":
             for i in range(col, col + ship):
                 if board[row][i] == "X":
@@ -168,8 +175,11 @@ def get_players_ship_position():
             print("Wrong input, enter letter between A and H\n")
     return direction, row, col
 
+def hit_ship_check(board):
+    """
+    Check for hit
+    """
 
-# scores = {"computer": 0, "player": 0}
 
 
 
@@ -198,12 +208,15 @@ def new_game():
     Starts a new game, set board size, number of ships,
     resets scores and initialises boards.
     """
-    board = COMPUTER_BOARD
-    place_ships(board)
-    show_board(COMPUTER_BOARD)
-    board = PLAYER_BOARD
+    reset()
+    board = computer_board
     place_ships(board)
     show_board(board)
+    board = player_board
+    place_ships(board)
+    show_board(board)
+
+
     
 
 
