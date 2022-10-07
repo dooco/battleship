@@ -215,13 +215,13 @@ def hit_ship_check(board):
     if board == player_board_guess:
         for row in board:
             for col in row:
-                if board[row][col] == "X":
+                if col == "X":
                     player_hit += 1
         return player_hit
     elif board == computer_board_guess:
         for row in board:
             for col in row:
-                if board[row][col] == "X":
+                if col == "X":
                     computer_hit += 1
         return computer_hit
 
