@@ -66,8 +66,8 @@ def place_ships(board):
                         break
             else:
                 print(f"Place your ship size: {ship} on grid")
-                direction_required = True
-                direction, row, col = get_position(direction_required)
+                direction = get_direction()
+                row, col = get_position()
                 if make_sure_ship_fits(board, ship, direction, row, col):
                     if not no_ship_overlap(board, ship, direction, row, col):
                         if direction == "H":
@@ -139,8 +139,8 @@ def no_ship_overlap(board, ship, direction, row, col):
         return False
 
 
-def get_position(direction_required):
-    while direction_required:
+def get_direction():
+    while True:
         try:
             direction = input("Enter direction you would like to position your ship, (H) horizontal (V) Vertical\n").upper()
             while direction not in ("H", "V"):
@@ -150,6 +150,10 @@ def get_position(direction_required):
                 break
         except ValueError:
             print("Wrong input Try 'H' or 'V'\n")
+    return direction
+
+
+def get_position():
     while True:
         try:
             row = input(("Enter row you would like to place ship (1-8) \n"))
@@ -172,7 +176,7 @@ def get_position(direction_required):
                 break
         except ValueError:
             print("Wrong input, enter letter between A and H\n")
-    return direction, row, col
+    return row, col
 
 
 def make_move(board):
@@ -180,9 +184,8 @@ def make_move(board):
     puts bomb on board
     """
     if board == player_board_guess:
-        direction_required = False
-        direction, row, col = get_position(direction_required)
-        if board[row, col] == "@" or board[row][col] == "X":
+        row, col = get_position()
+        if board[row][col] == "@" or board[row][col] == "X":
             print("Computer's Guess board\n")
             show_board(computer_board_guess)
             print("\nYour Guess board\n")
@@ -207,7 +210,22 @@ def hit_ship_check(board):
     """
     Check for hit
     """
-    pass
+    player_hit = 0
+    computer_hit = 0
+    if board == player_board_guess:
+        for row in board:
+            for col in row:
+                if board[row][col] == "X":
+                    player_hit += 1
+        return player_hit
+    elif board == computer_board_guess:
+        for row in board:
+            for col in row:
+                if board[row][col] == "X":
+                    computer_hit += 1
+        return computer_hit
+
+
 
 
 
@@ -243,9 +261,19 @@ def new_game():
     show_board(player_board)
     place_ships(player_board)
     show_board(player_board)
-    print("Player's guess board\n")
-    show_board(player_board_guess)
-    make_move(player_board_guess)
+    
+    while True:
+        while True:
+            print("Player's guess board\n")
+            show_board(player_board_guess)
+            make_move(player_board_guess)
+            break
+        if hit_ship_check(player_board_guess) == 17:
+            print(("You have won\n"))
+#           score_plus()
+#           increase player score on table
+            
+
     
 
 
