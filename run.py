@@ -228,8 +228,6 @@ def hit_ship_check(board):
 
 
 
-
-
 def welcome():
     """
     Display  instructions and information about game
