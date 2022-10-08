@@ -36,7 +36,7 @@ def show_board(board):
     """
     Makes and shows board for player to see progress
     """
-    if board == player_board or board == player_board_guess or board == computer_board:
+    if board == player_board or board == player_board_guess or board == computer_board_guess:
         print("  A B C D E F G H")
         print("  - - - - - - - -")
         row_number = 1
@@ -197,7 +197,7 @@ def make_move(board):
         else:
             board[row][col] = "@"
     else:
-        row, col = random.randint(0, BOARD_SIZE), random.randint(0, BOARD_SIZE)
+        row, col = random.randint(0, BOARD_SIZE-1), random.randint(0, BOARD_SIZE-1)
         if board[row][col] == "@" or board[row][col] == "X":
             make_move(board)
         elif player_board[row][col] == "X":
@@ -272,6 +272,17 @@ def new_game():
             print(("You have won\n"))
 #           score_plus()
 #           increase player score on table
+            quit()
+        while True:            
+            print("Computer's guess board\n")
+            show_board(computer_board_guess)
+            make_move(computer_board_guess)
+            break
+       
+        if hit_ship_check(computer_board_guess) == 17:
+            print("Computer has won\n")
+            quit()
+
             
 
     
