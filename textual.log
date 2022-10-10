@@ -1,0 +1,30 @@
+---
+driver=<class 'textual.drivers.linux_driver.LinuxDriver'>
+Load() >>> SmoothApp(title='Textual')
+Mount() >>> SmoothApp(title='Textual Application')
+Mount() >>> DockView(name='DockView#1')
+Resize(133, 30) >>> SmoothApp(title='Textual Application')
+Resize(133, 30) >>> DockView(name='DockView#1')
+Resize(133, 30) >>> DockView(name='DockView#1')
+Resize(133, 30) >>> DockView(name='DockView#1')
+Resize(133, 30) >>> DockView(name='DockView#1')
+Resize(133, 1) >>> Footer(keys=[])
+Resize(133, 15) >>> Placeholder(name='Placeholder#3')
+Resize(40, 30) >>> Placeholder(name='left')
+Resize(133, 14) >>> Placeholder(name='Placeholder#2')
+Enter() >>> Placeholder(name='Placeholder#3')
+Leave() >>> Placeholder(name='Placeholder#3', mouse_over=True)
+Enter() >>> Placeholder(name='Placeholder#2')
+Leave() >>> Placeholder(name='Placeholder#2', mouse_over=True)
+Enter() >>> Placeholder(name='Placeholder#3')
+view.forwarded Key(key='b')
+Key(key='b') >>> SmoothApp(title='Textual Application')
+ACTION SmoothApp(title='Textual Application') toggle_sidebar
+view.forwarded Key(key='b')
+Key(key='b') >>> SmoothApp(title='Textual Application')
+ACTION SmoothApp(title='Textual Application') toggle_sidebar
+view.forwarded Key(key='q')
+Key(key='q') >>> SmoothApp(title='Textual Application')
+ACTION SmoothApp(title='Textual Application') quit
+CLOSED SmoothApp(title='Textual Application')
+PROCESS END

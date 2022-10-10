@@ -1,4 +1,9 @@
 import random
+import colorama
+from colorama import Fore, Back, Style
+colorama.init(autoreset = True)
+from clear_screen import clear
+
 # Import random function so that positions on board 
 # can be randomised.
 # 
@@ -29,6 +34,12 @@ def reset():
     computer_board = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
     computer_board_guess = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
     
+
+def get_a_key(event):
+    while True:
+        if event.key.isalpha() or event.key.isdigit():
+            print(event.key)
+            return event.key
 
 
 
@@ -73,11 +84,15 @@ def place_ships(board):
                         if direction == "H":
                             for i in range(col, col + ship):
                                 board[row][i] = "X"
+                                welcome()
+                                show_board(board)
                         else:
                             for i in range(row, row + ship):
                                 board[i][col] = "X"
+                                welcome()
+                                show_board(board)
                         break
-#                break
+
             
 
 def make_sure_ship_fits(board, ship, direction, row, col):
@@ -156,7 +171,9 @@ def get_direction():
 def get_position():
     while True:
         try:
+            print("Enter row you would like to place ship (1-8\n")
             row = input(("Enter row you would like to place ship (1-8) \n"))
+            #row = get_a_key(event)
             while row not in ONE_TO_EIGHT:
                 print("Wrong input, select a number between 1 and 8\n")
                 break
@@ -232,20 +249,36 @@ def welcome():
     """
     Display  instructions and information about game
     """
-    print("="* 58)
-    print(" WELCOME TO BATTLESHIP GAME\n")
-    print(f"Board size: {size} X {size}.\n")
-    print(f"Number of ships : {num_ships}.\n")
-    print("="* 58)
+    clear()
+    print("\n")
+    print(colorama.Fore.RED + "#########      ###  ########### ########### ###        ##########  ######   ###    ###  #########  #########")
+    print(colorama.Fore.RED + "###    ###   ### ###    ###         ###     ###      " +
+          "  ###       ###    ### ###    ###     ###     ###    ### ")
+    print(colorama.Fore.RED + "###    ###  ###   ###   ###         ###     ###      " +
+          "  ###       ###        ###    ###     ###     ###    ###")
+    print(colorama.Fore.RED + "#########  ###########  ###         ###     ###      " +
+          "  ########  ########## ##########     ###     #########")
+    print(colorama.Fore.RED + "###    ### ###     ###  ###         ###     ###      " +
+          "  ###              ### ###    ###     ###     ###")
+    print(colorama.Fore.RED + "###    ### ###     ###  ###         ###     ###      " +
+          "  ###       ###    ### ###    ###     ###     ###")
+    print(colorama.Fore.RED + "#########  ###     ###  ###         ###     ##########" +
+          " ########## ########  ###    ###  #########  ###")
+    print(" ")
+    print(colorama.Fore.RED + "="* 110)
+    
+    print(f"\n")
+    print(f"\n")
+    print("="* 110)
     print("Instructions for Battleship")
     print("Player must guess co-ordinates of opponent's ships")
-    print(f"Objective is to hit all of opponent's {num_ships} ships before opponent hits yours.")
-    print(" Enter your guess as a row and colum number ")
-    print("Top left is row : 0, column : 0\n")
-    print("="* 58)
+    print(f"Objective is to hit all of opponent's ships ships before opponent hit yours.")
+    print("Enter your guess as a row number between 1 and 8 and ")
+    print("Enter your colum letter between 'A' and 'H'\n")
+    print("="* 110)
     print("@ = a ship on the battle grid\n")
-    print("* = co-ordinates of a HIT")
-    print("X = co-ordinates of a MISS")
+    print("* = co-ordinates of a ")
+    print("X = co-ordinates of a HIT")
 
 
 def new_game():
@@ -254,30 +287,36 @@ def new_game():
     resets scores and initialises boards.
     """
     
+    welcome()
     place_ships(computer_board)
     print("Place your ships")
-    show_board(player_board)
     place_ships(player_board)
-    show_board(player_board)
     
     while True:
         while True:
             print("Player's guess board\n")
+            welcome()
             show_board(player_board_guess)
             make_move(player_board_guess)
             break
         if hit_ship_check(player_board_guess) == 17:
+            welcome()
+            show_board(player_board_guess)
             print(("You have won\n"))
 #           score_plus()
 #           increase player score on table
             quit()
         while True:            
+            welcome()
             print("Computer's guess board\n")
             show_board(computer_board_guess)
             make_move(computer_board_guess)
             break
        
         if hit_ship_check(computer_board_guess) == 17:
+            welcome()
+            show_board(computer_board_guess)
+            print(("You have Lost\n"))
             print("Computer has won\n")
             quit()
 
