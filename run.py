@@ -4,12 +4,36 @@ from colorama import Fore, Back, Style
 colorama.init(autoreset = True)
 from clear_screen import clear
 import gspread
-from google.oauth2 import service_account
+from google.oauth2.service_account import Credentials
 SCOPE = ['https://www.googleapis.com/auth/spreadsheets',
          'https://www.googleapis.com/auth/drive.file',
          'https://www.googleapis.com/auth/drive']
-CREDS = service_account.Credentials.from_service_account_file('creds.json', scopes=SCOPE)
-CLIENT = gspread.authorize(CREDS)
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open("dooco_battleship")
+
+
+data = hi_score.get_all_values()
+
+print(data)
+
+def get_entries():
+    """
+    get the player entries, password and score 
+    """
+    hi_score = SHEET.worksheet("nam_pas_scr")
+
+    columns = []
+    for ind in range(0,3):
+        column = hi_score.col_values(ind)
+        columns.append(column[-5:])
+    
+    return columns
+def create_new_player:
+    """
+    Creates a new user to be added to the Google Sheet
+    """
 
 
 # Import random function so that positions on board 
@@ -253,6 +277,7 @@ def welcome():
     Display  instructions and information about game
     """
     clear()
+    print(colorama.Fore.RED + "="* 110)
     print("\n")
     print(colorama.Fore.RED + "#########      ###  ########### ########### ###        #########   ######   ###    ###  #########  #########")
     print(colorama.Fore.RED + "###    ###   ### ###    ###         ###     ###      " +
