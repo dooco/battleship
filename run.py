@@ -7,19 +7,12 @@ from clear_screen import clear
 # Import random function so that positions on board 
 # can be randomised.
 # 
-ALPHA_NUMERO = {
-    "A": 0,
-    "B": 1,
-    "C": 2,
-    "D": 3,
-    "E": 4,
-    "F": 5,
-    "G": 6,
-    "H": 7
-}
+ALPHA_NUMERO = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
 ONE_TO_EIGHT = ("1", "2", "3", "4", "5", "6", "7", "8")
 BOARD_SIZE = 8
 SHIPS = [2,3,3,4,5]
+PLAYER_COL = colorama.Fore.BLUE
+COMPUTER_COL = colorama.Fore.RED
 player_board = [[" "]*8 for _ in range(BOARD_SIZE)]
 player_board_guess = [[" "]*8 for _ in range(BOARD_SIZE)]
 computer_board = [[" "]*8 for _ in range(BOARD_SIZE)]
@@ -47,13 +40,16 @@ def show_board(board):
     """
     Makes and shows board for player to see progress
     """
-    if board == player_board or board == player_board_guess or board == computer_board_guess:
-        print("  A B C D E F G H")
-        print("  - - - - - - - -")
-        row_number = 1
-        for row in board:
-            print(f"%d|%s" % (row_number, "|".join(row)))
-            row_number += 1
+    if board == player_board or board == player_board_guess:
+        board_col = PLAYER_COL
+    else:
+        board_col = COMPUTER_COL
+    print(board_col + "  A B C D E F G H")
+    print(board_col + "  - - - - - - - -")
+    row_number = 1
+    for row in board:
+        print(board_col + "%d|%s" % (row_number, f"{board_col}|".join(row)))
+        row_number += 1
 
 
 def place_ships(board):
@@ -171,7 +167,6 @@ def get_direction():
 def get_position():
     while True:
         try:
-            print("Enter row you would like to place ship (1-8\n")
             row = input(("Enter row you would like to place ship (1-8) \n"))
             #row = get_a_key(event)
             while row not in ONE_TO_EIGHT:
@@ -306,11 +301,12 @@ def new_game():
 #           score_plus()
 #           increase player score on table
             quit()
-        while True:            
-            welcome()
+        while True:
             print("Computer's guess board\n")
             show_board(computer_board_guess)
             make_move(computer_board_guess)
+            if get_direction() == "V":
+                break
             break
        
         if hit_ship_check(computer_board_guess) == 17:
@@ -319,6 +315,7 @@ def new_game():
             print(("You have Lost\n"))
             print("Computer has won\n")
             quit()
+
 
             
 
