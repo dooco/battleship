@@ -3,6 +3,14 @@ import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset = True)
 from clear_screen import clear
+import gspread
+from google.oauth2 import service_account
+SCOPE = ['https://www.googleapis.com/auth/spreadsheets',
+         'https://www.googleapis.com/auth/drive.file',
+         'https://www.googleapis.com/auth/drive']
+CREDS = service_account.Credentials.from_service_account_file('creds.json', scopes=SCOPE)
+CLIENT = gspread.authorize(CREDS)
+
 
 # Import random function so that positions on board 
 # can be randomised.
@@ -40,7 +48,7 @@ def show_board(board):
     """
     Makes and shows board for player to see progress
     """
-    if board == player_board or board == player_board_guess:
+    if (board == player_board) or (board == player_board_guess):
         board_col = PLAYER_COL
     else:
         board_col = COMPUTER_COL
@@ -246,34 +254,33 @@ def welcome():
     """
     clear()
     print("\n")
-    print(colorama.Fore.RED + "#########      ###  ########### ########### ###        ##########  ######   ###    ###  #########  #########")
+    print(colorama.Fore.RED + "#########      ###  ########### ########### ###        #########   ######   ###    ###  #########  #########")
     print(colorama.Fore.RED + "###    ###   ### ###    ###         ###     ###      " +
           "  ###       ###    ### ###    ###     ###     ###    ### ")
     print(colorama.Fore.RED + "###    ###  ###   ###   ###         ###     ###      " +
           "  ###       ###        ###    ###     ###     ###    ###")
     print(colorama.Fore.RED + "#########  ###########  ###         ###     ###      " +
           "  ########  ########## ##########     ###     #########")
-    print(colorama.Fore.RED + "###    ### ###     ###  ###         ###     ###      " +
-          "  ###              ### ###    ###     ###     ###")
-    print(colorama.Fore.RED + "###    ### ###     ###  ###         ###     ###      " +
-          "  ###       ###    ### ###    ###     ###     ###")
-    print(colorama.Fore.RED + "#########  ###     ###  ###         ###     ##########" +
-          " ########## ########  ###    ###  #########  ###")
+    print(colorama.Fore.RED + "###    ### ###     ###  ###         ###     " +
+          "###        ###              ### ###    ###     ###     ###")
+    print(colorama.Fore.RED + "###    ### ###     ###  ###         ###     " +
+          "###        ###       ###    ### ###    ###     ###     ###")
+    print(colorama.Fore.RED + "#########  ###     ###  ###         ###     " +
+          "########## #########  ########  ###    ###  #########  ###")
     print(" ")
     print(colorama.Fore.RED + "="* 110)
-    
-    print(f"\n")
-    print(f"\n")
-    print("="* 110)
-    print("Instructions for Battleship")
-    print("Player must guess co-ordinates of opponent's ships")
-    print(f"Objective is to hit all of opponent's ships ships before opponent hit yours.")
-    print("Enter your guess as a row number between 1 and 8 and ")
-    print("Enter your colum letter between 'A' and 'H'\n")
-    print("="* 110)
-    print("@ = a ship on the battle grid\n")
-    print("* = co-ordinates of a ")
-    print("X = co-ordinates of a HIT")
+    print("\n")
+    print(PLAYER_COL + "Instructions for Battleship")
+    print("\n")
+    print(COMPUTER_COL + "="* 110)
+    print(PLAYER_COL + "Player must guess co-ordinates of opponent's ships")
+    print(PLAYER_COL + "Objective is to hit all of opponent's ships before" + 
+    " opponent hits all of yours.\n")
+    print(PLAYER_COL + "Enter your guess as a row number between 1 and 8 and ")
+    print(PLAYER_COL + "Enter your colum letter between 'A' and 'H'\n") 
+    print(PLAYER_COL + "@ = co-ordinates of a MISS\n")
+    print(PLAYER_COL + "X = co-ordinates of a HIT")
+    print(COMPUTER_COL + "="* 110)
 
 
 def new_game():
@@ -289,8 +296,11 @@ def new_game():
     
     while True:
         while True:
-            print("Player's guess board\n")
+            
             welcome()
+            print(COMPUTER_COL + "\nComputer's guess board\n")
+            show_board(computer_board_guess)
+            print(PLAYER_COL + "\nPlayer's guess board\n")
             show_board(player_board_guess)
             make_move(player_board_guess)
             break
@@ -302,11 +312,8 @@ def new_game():
 #           increase player score on table
             quit()
         while True:
-            print("Computer's guess board\n")
-            show_board(computer_board_guess)
+            
             make_move(computer_board_guess)
-            if get_direction() == "V":
-                break
             break
        
         if hit_ship_check(computer_board_guess) == 17:
