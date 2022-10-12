@@ -63,6 +63,15 @@ def get_passwd():
             print("good")
             return pword
             break
+
+
+def update_worksheet(data, worksheet="nam_pas_scr"):
+    """
+    Update worksheet
+    """
+    worksheet_to_update = SHEET.worksheet(worksheet)
+    worksheet_to_update.append_row(data)
+    print(f"{worksheet} worksheet updated successfully\n")
         
     
 
@@ -351,12 +360,19 @@ def new_game():
     for i in score:
         win_list.append(i)
     print_winning_list(win_list)
-    new_player = create_new_player()
-    matching = [s for s in win_list if new_player in s]
-    if not matching:
-        print("H U R R A Y   Y O U R   N A M E  I S   A V A I L A B L E")
-    print(new_player)
-    quit()
+    while True:
+        choice = input("Existing player (E) or New player (N). Enter E or N\n")
+        if choice.upper() in ["E", "N"]:
+            break
+
+    if choice.upper() == "N":
+        new_player = create_new_player()
+        matching = [s for s in win_list if new_player in s]
+        if not matching:
+            print("H U R R A Y   Y O U R   N A M E  I S   A V A I L A B L E")
+            pword = get_passwd()
+            data = [new_player, pword, "0"]
+            update_worksheet(data,"nam_pas_scr")
     
     welcome()
     place_ships(computer_board)
@@ -365,7 +381,6 @@ def new_game():
     
     while True:
         while True:
-            
             welcome()
             print(COMPUTER_COL + "\nComputer's guess board\n")
             show_board(computer_board_guess)
@@ -378,13 +393,11 @@ def new_game():
             show_board(player_board_guess)
             print(("You have won\n"))
 #           score_plus()
-#           increase player score on table
+#              increase player score on table
             quit()
         while True:
-            
             make_move(computer_board_guess)
             break
-       
         if hit_ship_check(computer_board_guess) == 17:
             welcome()
             show_board(computer_board_guess)
@@ -393,16 +406,6 @@ def new_game():
             quit()
 
 
-            
 
-    
-
-
-
-    
-
-
-
-    
 new_game()
 
