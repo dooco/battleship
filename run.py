@@ -1,4 +1,5 @@
 import random
+import re
 import colorama
 from colorama import Fore, Back, Style
 colorama.init(autoreset = True)
@@ -14,26 +15,57 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("dooco_battleship")
 
 
-data = hi_score.get_all_values()
 
-print(data)
 
-def get_entries():
+def print_winning_list(win_list):
     """
     get the player entries, password and score 
     """
-    hi_score = SHEET.worksheet("nam_pas_scr")
-
-    columns = []
-    for ind in range(0,3):
-        column = hi_score.col_values(ind)
-        columns.append(column[-5:])
     
-    return columns
-def create_new_player:
+    if len(win_list) > 5:
+        del win_list[5:]
+    print("Top 5 winners")
+    print("Player Name" + " "*6 + "Score")
+    for each in win_list:
+        print('{:12}:{:>8}'.format(str(each[0]), str(each[2])))
+    return win_list
+
+
+def create_new_player():
     """
-    Creates a new user to be added to the Google Sheet
+    Creates a new user
     """
+    while True:
+        new_player = input("Please enter your player name (12 characters max):\n")
+        if len(new_player) < 12 and new_player.isalnum():
+            return new_player
+            break
+        print("Must be alphanumeric and less than 12 characters\n")
+
+
+def get_passwd():
+    """
+    Get a password at least 6 chars, one upper case, one lower case
+    one digit, one sp[ecial character.
+
+    Code credit to stack overflow
+    """
+    while True:
+        pword = input("Enter a password at least 6 chars, one upper case," + 
+        " one lower case one digit, one sp[ecial character:\n ")
+        if (re.match(
+            "(?=.{6,})" + 
+        "(?=.*[A-Z].*)" +
+        "(?=.*[a-z].*)" +
+        "(?=.*\d.*)" +
+        "(?=.*[\!\@\#\$\%\^\&\*].*)(?=^[\!\@\#\$\%\^\&\*a-zA-Z0-9]+$)" +
+        "^.*$", pword)):
+            print("good")
+            return pword
+            break
+        
+    
+
 
 
 # Import random function so that positions on board 
@@ -313,6 +345,18 @@ def new_game():
     Starts a new game, set board size, number of ships,
     resets scores and initialises boards.
     """
+    win_list = []
+    hi_score = SHEET.worksheet("nam_pas_scr")
+    score = hi_score.get_values()
+    for i in score:
+        win_list.append(i)
+    print_winning_list(win_list)
+    new_player = create_new_player()
+    matching = [s for s in win_list if new_player in s]
+    if not matching:
+        print("H U R R A Y   Y O U R   N A M E  I S   A V A I L A B L E")
+    print(new_player)
+    quit()
     
     welcome()
     place_ships(computer_board)
