@@ -322,7 +322,7 @@ def welcome():
     Display  instructions and information about game
     """
     clear()
-    print(colorama.Fore.RED + "=" * 110)
+    print(colorama.Fore.RED + "=" * 70)
     print("\n")
     print(
         colorama.Fore.RED
@@ -359,15 +359,15 @@ def welcome():
         + "###### #####  ####  ##    ##  ######  ##"
     )
     print(" ")
-    print(colorama.Fore.RED + "=" * 110)
+    print(colorama.Fore.RED + "=" * 70)
 
 
 def instructions():
-    print(colorama.Fore.RED + "=" * 110)
+    print(colorama.Fore.RED + "=" * 70)
     print("\n")
     print(PLAYER_COL + "Instructions for Battleship")
     print("\n")
-    print(COMPUTER_COL + "=" * 110)
+    print(COMPUTER_COL + "=" * 70)
     print(PLAYER_COL + "Player must guess co-ordinates of opponent's ships")
     print(
         PLAYER_COL
@@ -378,7 +378,7 @@ def instructions():
     print(PLAYER_COL + "Enter your colum letter between 'A' and 'H'\n")
     print(PLAYER_COL + "@ = co-ordinates of a MISS\n")
     print(PLAYER_COL + "X = co-ordinates of a HIT")
-    print(COMPUTER_COL + "=" * 110)
+    print(COMPUTER_COL + "=" * 70)
 
 
 def main():
