@@ -1,6 +1,9 @@
 import random
+
 import re
+
 import colorama
+
 from colorama import Fore, Back, Style
 
 colorama.init(autoreset=True)
@@ -323,37 +326,37 @@ def welcome():
     print("\n")
     print(
         colorama.Fore.RED
-        + "#########      ###  ########### ########### ###        #########   ######   ###    ###  #########  #########"
+        + "#####    ##  ####### ######## ##     #####   ####  ##   ##  ####  #####"
     )
     print(
         colorama.Fore.RED
         + "###    ###   ### ###    ###         ###     ###      "
-        + "  ###       ###    ### ###    ###     ###     ###    ### "
+        + " ##     ##   ## ##   ##    ##    ###   ## "
     )
     print(
         colorama.Fore.RED
-        + "###    ###  ###   ###   ###         ###     ###      "
-        + "  ###       ###        ###    ###     ###     ###    ###"
+        + "##   ## ##  ##  ##       ##    ##    "
+        + "  ##     ##       ##    ##    ##    ##    ##"
     )
     print(
         colorama.Fore.RED
-        + "#########  ###########  ###         ###     ###      "
-        + "  ########  ########## ##########     ###     #########"
+        + "#####  #######  ##        ##    ##    "
+        + "  ####  ###### ######    ##     #####"
     )
     print(
         colorama.Fore.RED
-        + "###    ### ###     ###  ###         ###     "
-        + "###        ###              ### ###    ###     ###     ###"
+        + "##   ## ##    ## ##       ##   "
+        + "##      ##            ## ##   ##    ##    ##"
     )
     print(
         colorama.Fore.RED
-        + "###    ### ###     ###  ###         ###     "
-        + "###        ###       ###    ### ###    ###     ###     ###"
+        + "##    ## ##    ##  ##       ##   "
+        + "##       ##      ##   ## ##    ##    ##    ##"
     )
     print(
         colorama.Fore.RED
-        + "#########  ###     ###  ###         ###     "
-        + "########## #########  ########  ###    ###  #########  ###"
+        + "#####  ##    ##  ##       ##   "
+        + "###### #####  ####  ##    ##  ######  ##"
     )
     print(" ")
     print(colorama.Fore.RED + "=" * 110)
@@ -384,6 +387,7 @@ def main():
     resets scores and initialises boards.
     """
     welcome()
+    quit()
     win_list = []
     hi_score = SHEET.worksheet("nam_pas_scr")
     score = hi_score.get_values()
