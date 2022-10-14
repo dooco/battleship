@@ -325,18 +325,16 @@ def welcome():
     Display  instructions and information about game
     """
     clear()
-    print(colorama.Fore.RED + "=" * 79)
-    print("\n")
+    print(colorama.Fore.MAGENTA + "-" * 79)
     print(" ██████   █████  ████████ ████████ ██      ███████ ███████ ██   ██ ██ ██████")
     print(" ██   ██ ██   ██    ██       ██    ██      ██      ██      ██   ██ ██ ██   ██")
     print(" ██████  ███████    ██       ██    ██      █████   ███████ ███████ ██ ██████")
     print(" ██   ██ ██   ██    ██       ██    ██      ██           ██ ██   ██ ██ ██")
     print(" ██████  ██   ██    ██       ██    ███████ ███████ ███████ ██   ██ ██ ██")
-    print("\n")
-    print(colorama.Fore.RED + "=" * 79)
+    print(colorama.Fore.MAGENTA + "-" * 79)
 
 def you_win():
-    print(colorama.Fore.RED + "=" * 79)
+    print(colorama.Fore.MAGENTA + "-" * 79)
     print("\n")
     print("    ██    ██  ██████  ██    ██     ██     ██ ██ ███    ██")
     print("     ██  ██  ██    ██ ██    ██     ██     ██ ██ ████   ██")
@@ -344,11 +342,11 @@ def you_win():
     print("       ██    ██    ██ ██    ██     ██ ███ ██ ██ ██  ██ ██")
     print("       ██     ██████   ██████       ███ ███  ██ ██   ████")
     print("\n")
-    print(colorama.Fore.RED + "=" * 79)
+    print(colorama.Fore.MAGENTA + "-" * 79)
 
 
 def you_loose():
-    print(colorama.Fore.RED + "=" * 79)
+    print(colorama.Fore.RED + "-" * 79)
     print("\n")
     print("    ██    ██  ██████  ██    ██     ██       ██████   ██████  ███████ ███████")
     print("     ██  ██  ██    ██ ██    ██     ██      ██    ██ ██    ██ ██      ██")
@@ -356,7 +354,7 @@ def you_loose():
     print("       ██    ██    ██ ██    ██     ██      ██    ██ ██    ██      ██ ██")
     print("       ██     ██████   ██████      ███████  ██████   ██████  ███████ ███████")
     print("\n")
-    print(colorama.Fore.RED + "=" * 79)
+    print(colorama.Fore.RED + "-" * 79)
 
 
 
