@@ -72,7 +72,6 @@ def get_passwd():
             + "^.*$",
             pword,
         ):
-            print("good")
             return pword
             break
 
@@ -95,6 +94,7 @@ BOARD_SIZE = 8
 SHIPS = [2, 3, 3, 4, 5]
 PLAYER_COL = colorama.Fore.BLUE
 COMPUTER_COL = colorama.Fore.RED
+WELCOME_COL = colorama.Fore.LIGHTBLUE_EX + colorama.Style.BRIGHT
 player_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
 player_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
 computer_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
@@ -324,13 +324,14 @@ def welcome():
     """
     Display  instructions and information about game
     """
-    clear()
+    # clear()
+    print('\033[2J')
     print(colorama.Fore.MAGENTA + "-" * 79)
-    print(" ██████   █████  ████████ ████████ ██      ███████ ███████ ██   ██ ██ ██████")
-    print(" ██   ██ ██   ██    ██       ██    ██      ██      ██      ██   ██ ██ ██   ██")
-    print(" ██████  ███████    ██       ██    ██      █████   ███████ ███████ ██ ██████")
-    print(" ██   ██ ██   ██    ██       ██    ██      ██           ██ ██   ██ ██ ██")
-    print(" ██████  ██   ██    ██       ██    ███████ ███████ ███████ ██   ██ ██ ██")
+    print(WELCOME_COL + " ██████   █████  ████████ ████████ ██      ███████ ███████ ██   ██ ██ ██████")
+    print(WELCOME_COL + " ██   ██ ██   ██    ██       ██    ██      ██      ██      ██   ██ ██ ██   ██")
+    print(WELCOME_COL + " ██████  ███████    ██       ██    ██      █████   ███████ ███████ ██ ██████")
+    print(WELCOME_COL + " ██   ██ ██   ██    ██       ██    ██      ██           ██ ██   ██ ██ ██")
+    print(WELCOME_COL + " ██████  ██   ██    ██       ██    ███████ ███████ ███████ ██   ██ ██ ██")
     print(colorama.Fore.MAGENTA + "-" * 79)
 
 def you_win():
@@ -365,9 +366,7 @@ def you_loose():
 
 def instructions():
     print(colorama.Fore.RED + "=" * 79)
-    print("\n")
     print(PLAYER_COL + "Instructions for Battleship")
-    print("\n")
     print(COMPUTER_COL + "=" * 79)
     print(PLAYER_COL + "Player must guess co-ordinates of opponent's ships")
     print(
@@ -379,7 +378,7 @@ def instructions():
     print(PLAYER_COL + "Enter your colum letter between 'A' and 'H'\n")
     print(PLAYER_COL + "@ = co-ordinates of a MISS\n")
     print(PLAYER_COL + "X = co-ordinates of a HIT")
-    print(COMPUTER_COL + "=" * 70)
+    print(COMPUTER_COL + "=" * 79)
 
 
 def main():
@@ -407,13 +406,15 @@ def main():
             pword = get_passwd()
             data = [new_player, pword, "0"]
             update_worksheet(data, "nam_pas_scr")
-    player_name = create_new_player()
-    matching = [s for s in win_list if player_name in s]
-    if matching:
-        print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
-        pword = get_passwd()
-        if pword == player_name in win_list[1]:
-            print(f"Player {player_name} access code is correct")
+    while True:
+        player_name = create_new_player()
+        matching = [s for s in win_list if player_name in s]
+        if matching:
+            print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
+            pword = get_passwd()
+            if pword == player_name in win_list[1]:
+                print(f"Player {player_name} access code is correct")
+                break
 
 
     welcome()
