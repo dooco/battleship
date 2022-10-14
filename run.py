@@ -7,8 +7,11 @@ import colorama
 from colorama import Fore, Back, Style
 
 colorama.init(autoreset=True)
+
 from clear_screen import clear
+
 import gspread
+
 from google.oauth2.service_account import Credentials
 
 SCOPE = [
@@ -322,52 +325,41 @@ def welcome():
     Display  instructions and information about game
     """
     clear()
-    print(colorama.Fore.RED + "=" * 70)
+    print(colorama.Fore.RED + "=" * 79)
     print("\n")
-    print(
-        colorama.Fore.RED
-        + "#####    ##  ####### ######## ##     #####   ####  ##   ##  ####  #####"
-    )
-    print(
-        colorama.Fore.RED
-        + "###    ###   ### ###    ###         ###     ###      "
-        + " ##     ##   ## ##   ##    ##    ###   ## "
-    )
-    print(
-        colorama.Fore.RED
-        + "##   ## ##  ##  ##       ##    ##    "
-        + "  ##     ##       ##    ##    ##    ##    ##"
-    )
-    print(
-        colorama.Fore.RED
-        + "#####  #######  ##        ##    ##    "
-        + "  ####  ###### ######    ##     #####"
-    )
-    print(
-        colorama.Fore.RED
-        + "##   ## ##    ## ##       ##   "
-        + "##      ##            ## ##   ##    ##    ##"
-    )
-    print(
-        colorama.Fore.RED
-        + "##    ## ##    ##  ##       ##   "
-        + "##       ##      ##   ## ##    ##    ##    ##"
-    )
-    print(
-        colorama.Fore.RED
-        + "#####  ##    ##  ##       ##   "
-        + "###### #####  ####  ##    ##  ######  ##"
-    )
-    print(" ")
-    print(colorama.Fore.RED + "=" * 70)
+    print(" ██████   █████  ████████ ████████ ██      ███████ ███████ ██   ██ ██ ██████")
+    print(" ██   ██ ██   ██    ██       ██    ██      ██      ██      ██   ██ ██ ██   ██")
+    print(" ██████  ███████    ██       ██    ██      █████   ███████ ███████ ██ ██████")
+    print(" ██   ██ ██   ██    ██       ██    ██      ██           ██ ██   ██ ██ ██")
+    print(" ██████  ██   ██    ██       ██    ███████ ███████ ███████ ██   ██ ██ ██")
+    print("\n")
+
+    print("    ██    ██  ██████  ██    ██     ██     ██ ██ ███    ██")
+    print("     ██  ██  ██    ██ ██    ██     ██     ██ ██ ████   ██")
+    print("      ████   ██    ██ ██    ██     ██  █  ██ ██ ██ ██  ██")
+    print("       ██    ██    ██ ██    ██     ██ ███ ██ ██ ██  ██ ██")
+    print("       ██     ██████   ██████       ███ ███  ██ ██   ████")
+
+#  ██BBBB██BB██████BB██BBBB██BBBBB██BBBBBBB██████BBB██████BB███████B███████B
+#  B██BB██BB██BBBB██B██BBBB██BBBBB██BBBBBB██BBBB██B██BBBB██B██BBBBBB██BBBBBB
+#  BB████BBB██BBBB██B██BBBB██BBBBB██BBBBBB██BBBB██B██BBBB██B███████B█████BBB
+#  BBB██BBBB██BBBB██B██BBBB██BBBBB██BBBBBB██BBBB██B██BBBB██BBBBBB██B██BBBBBB
+#  BBB██BBBBB██████BBB██████BBBBBB███████BB██████BBB██████BB███████B███████B
+
+
+
+
+    
+  
+    print(colorama.Fore.RED  +  "=" * 79)
 
 
 def instructions():
-    print(colorama.Fore.RED + "=" * 70)
+    print(colorama.Fore.RED + "=" * 79)
     print("\n")
     print(PLAYER_COL + "Instructions for Battleship")
     print("\n")
-    print(COMPUTER_COL + "=" * 70)
+    print(COMPUTER_COL + "=" * 79)
     print(PLAYER_COL + "Player must guess co-ordinates of opponent's ships")
     print(
         PLAYER_COL
