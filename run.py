@@ -60,8 +60,8 @@ def get_passwd():
     """
     while True:
         pword = input(
-            "Enter a password at least 6 chars, one upper case,"
-            + " one lower case one digit, one sp[ecial character:\n "
+            "Enter an access code at least 6 chars, one upper case,"
+            + " one lower case one digit, one special character:\n "
         )
         if re.match(
             "(?=.{6,})"
@@ -234,7 +234,7 @@ def get_direction():
     while True:
         try:
             direction = input(
-                "Enter direction you would like to position your ship, (H) horizontal (V) Vertical\n"
+                "Enter (H) horizontal (V) Vertical direction to position your ship\n"
             ).upper()
             while direction not in ("H", "V"):
                 print("Incorrect choice, only H or V")
@@ -406,17 +406,19 @@ def main():
             pword = get_passwd()
             data = [new_player, pword, "0"]
             update_worksheet(data, "nam_pas_scr")
+
     while True:
         player_name = create_new_player()
         matching = [s for s in win_list if player_name in s]
         if matching:
             print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
             pword = get_passwd()
-            if pword == player_name in win_list[1]:
-                print(f"Player {player_name} access code is correct")
+            player_name_roe = win_list.loc[player_name]
+            player_access = SHEET.row_values(player_name_roe)[1]
+            player_score = int(SHEET.row_values(player_name_roe)[2])
+            if pword == player_access:
+                print(f"Player {player_name} you have won {player_score} games")
                 break
-
-
     welcome()
     instructions()
     place_ships(computer_board)
