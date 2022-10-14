@@ -333,19 +333,30 @@ def welcome():
     print(" ██   ██ ██   ██    ██       ██    ██      ██           ██ ██   ██ ██ ██")
     print(" ██████  ██   ██    ██       ██    ███████ ███████ ███████ ██   ██ ██ ██")
     print("\n")
+    print(colorama.Fore.RED + "=" * 79)
 
+def you_win():
+    print(colorama.Fore.RED + "=" * 79)
+    print("\n")
     print("    ██    ██  ██████  ██    ██     ██     ██ ██ ███    ██")
     print("     ██  ██  ██    ██ ██    ██     ██     ██ ██ ████   ██")
     print("      ████   ██    ██ ██    ██     ██  █  ██ ██ ██ ██  ██")
     print("       ██    ██    ██ ██    ██     ██ ███ ██ ██ ██  ██ ██")
     print("       ██     ██████   ██████       ███ ███  ██ ██   ████")
+    print("\n")
+    print(colorama.Fore.RED + "=" * 79)
 
-#  ██BBBB██BB██████BB██BBBB██BBBBB██BBBBBBB██████BBB██████BB███████B███████B
-#  B██BB██BB██BBBB██B██BBBB██BBBBB██BBBBBB██BBBB██B██BBBB██B██BBBBBB██BBBBBB
-#  BB████BBB██BBBB██B██BBBB██BBBBB██BBBBBB██BBBB██B██BBBB██B███████B█████BBB
-#  BBB██BBBB██BBBB██B██BBBB██BBBBB██BBBBBB██BBBB██B██BBBB██BBBBBB██B██BBBBBB
-#  BBB██BBBBB██████BBB██████BBBBBB███████BB██████BBB██████BB███████B███████B
 
+def you_loose():
+    print(colorama.Fore.RED + "=" * 79)
+    print("\n")
+    print("    ██    ██  ██████  ██    ██     ██       ██████   ██████  ███████ ███████")
+    print("     ██  ██  ██    ██ ██    ██     ██      ██    ██ ██    ██ ██      ██")
+    print("      ████   ██    ██ ██    ██     ██      ██    ██ ██    ██ ███████ █████")
+    print("       ██    ██    ██ ██    ██     ██      ██    ██ ██    ██      ██ ██")
+    print("       ██     ██████   ██████      ███████  ██████   ██████  ███████ ███████")
+    print("\n")
+    print(colorama.Fore.RED + "=" * 79)
 
 
 
@@ -379,7 +390,6 @@ def main():
     resets scores and initialises boards.
     """
     welcome()
-    quit()
     win_list = []
     hi_score = SHEET.worksheet("nam_pas_scr")
     score = hi_score.get_values()
@@ -395,10 +405,18 @@ def main():
         new_player = create_new_player()
         matching = [s for s in win_list if new_player in s]
         if not matching:
-            print("H U R R A Y   Y O U R   N A M E  I S   A V A I L A B L E")
+            print(PLAYER_COL + " Y O U R   N A M E  I S   A V A I L A B L E")
             pword = get_passwd()
             data = [new_player, pword, "0"]
             update_worksheet(data, "nam_pas_scr")
+    player_name = create_new_player()
+    matching = [s for s in win_list if player_name in s]
+    if matching:
+        print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
+        pword = get_passwd()
+        if pword == player_name in win_list[1]:
+            print(f"Player {player_name} access code is correct")
+
 
     welcome()
     instructions()
@@ -418,7 +436,7 @@ def main():
         if hit_ship_check(player_board_guess) == 17:
             welcome()
             show_board(player_board_guess)
-            print(("You have won\n"))
+            you_win()
             #           score_plus()
             #              increase player score on table
             quit()
@@ -428,8 +446,7 @@ def main():
         if hit_ship_check(computer_board_guess) == 17:
             welcome()
             show_board(computer_board_guess)
-            print(("You have Lost\n"))
-            print("Computer has won\n")
+            you_loose()
             quit()
 
 
