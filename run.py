@@ -48,12 +48,13 @@ def print_recent_list(win_list):
     get the player entries, password and score
     """
 
+    p_list = []
     if len(win_list) > 5:
-        del win_list[5:]
+        p_list = win_list[-6:-1]
     print(WELCOME_COL + "R E C E N T   5   W I N N E R S")
     print(COMPUTER_COL + "Player Name" + " " * 6 + "Score")
-    for each in win_list:
-        print(COMPUTER_COL + "{:12}:{:>8}".format(str(each[0]), str(each[2])))
+    for each in p_list:
+        print(WELCOME_COL + "{:12}:{:>8}".format(str(each[0]), str(each[2])))
     return win_list
 
 
@@ -376,6 +377,10 @@ def instructions():
     print(colorama.Fore.RED + "=" * 79)
     print(PLAYER_COL + "Instructions for Battleship")
     print(COMPUTER_COL + "=" * 79)
+    print(PLAYER_COL + "You have 5 ships, One with 2 spaces, two with 3 spaces,")
+    print(PLAYER_COL +  "one with 4 spaces & one with 5 spaces on board")
+    print(PLAYER_COL + "First enter direction (H for horizontal or V for Vertical) and then ")
+    print(PLAYER_COL + "co-ordinates (digit between 1 & 8 and letter between A & H) for all 5 ships")
     print(PLAYER_COL + "Player must guess co-ordinates of opponent's ships")
     print(
         PLAYER_COL
@@ -420,6 +425,7 @@ def main():
         matching = [s for s in win_list if player_name in s]
         if matching:
             print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
+            break
             pword = get_passwd()
             player_name_roe = df.loc[df["nam"] == player_name]
             #player_name_roe = df.loc(player_name)
