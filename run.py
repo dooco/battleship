@@ -2,6 +2,8 @@ import random
 
 import re
 
+import pandas as pd
+
 import colorama
 
 from colorama import Fore, Back, Style
@@ -23,19 +25,35 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("dooco_battleship")
+gc = gspread.service_account(filename="creds.json")
+sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13TkKpTCjFeVacN9uL_vlk5J778fsGl6Sfg1J8ALHyv4/edit#gid=0')
+ws = sh.worksheet('nam_pas_scr')
+df = pd.DataFrame(ws.get_all_records())
+#
+ALPHA_NUMERO = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
+ONE_TO_EIGHT = ("1", "2", "3", "4", "5", "6", "7", "8")
+BOARD_SIZE = 8
+SHIPS = [2, 3, 3, 4, 5]
+PLAYER_COL = colorama.Fore.BLUE
+COMPUTER_COL = colorama.Fore.RED
+WELCOME_COL = colorama.Fore.LIGHTBLUE_EX + colorama.Style.BRIGHT
+player_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
+player_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
+computer_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
+computer_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
+player_name_roe = []
 
-
-def print_winning_list(win_list):
+def print_recent_list(win_list):
     """
     get the player entries, password and score
     """
 
     if len(win_list) > 5:
         del win_list[5:]
-    print("Top 5 winners")
-    print("Player Name" + " " * 6 + "Score")
+    print(WELCOME_COL + "R E C E N T   5   W I N N E R S")
+    print(COMPUTER_COL + "Player Name" + " " * 6 + "Score")
     for each in win_list:
-        print("{:12}:{:>8}".format(str(each[0]), str(each[2])))
+        print(COMPUTER_COL + "{:12}:{:>8}".format(str(each[0]), str(each[2])))
     return win_list
 
 
@@ -88,17 +106,7 @@ def update_worksheet(data, worksheet="nam_pas_scr"):
 # Import random function so that positions on board
 # can be randomised.
 #
-ALPHA_NUMERO = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
-ONE_TO_EIGHT = ("1", "2", "3", "4", "5", "6", "7", "8")
-BOARD_SIZE = 8
-SHIPS = [2, 3, 3, 4, 5]
-PLAYER_COL = colorama.Fore.BLUE
-COMPUTER_COL = colorama.Fore.RED
-WELCOME_COL = colorama.Fore.LIGHTBLUE_EX + colorama.Style.BRIGHT
-player_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
-player_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
-computer_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
-computer_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
+
 
 
 def reset():
@@ -392,7 +400,7 @@ def main():
     score = hi_score.get_values()
     for i in score:
         win_list.append(i)
-    print_winning_list(win_list)
+    print_recent_list(win_list)
     while True:
         choice = input("Existing player (E) or New player (N). Enter E or N\n")
         if choice.upper() in ["E", "N"]:
@@ -413,9 +421,11 @@ def main():
         if matching:
             print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
             pword = get_passwd()
-            player_name_roe = win_list.loc[player_name]
-            player_access = SHEET.row_values(player_name_roe)[1]
-            player_score = int(SHEET.row_values(player_name_roe)[2])
+            player_name_roe = df.loc[df["nam"] == player_name]
+            #player_name_roe = df.loc(player_name)
+            print(player_name_roe)
+            player_access = player_name_roe[2]
+            player_score = int(player_name_roe[3])
             if pword == player_access:
                 print(f"Player {player_name} you have won {player_score} games")
                 break

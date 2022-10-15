@@ -1,10 +1,87 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome dooco,
+# BATTLESHIP
+# Table of  Contents
+# Goals
+## User Goals
+## Owner Goals
+# User Experience
+## User Stories
+### First Time User
+### Returning User
+### Regular User
+## Owner Stories
+# User Manual
+# Design
+## Technical Design
+### Flow Diagram
+### Data Models
+### Colours
+# Technologies Used
+## Languages
+- Python3
+- HTML
+- CSS
+## Libraries
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **August 17, 2021**
+### Built in Libraries
+- random
+- 
+### Third Party Libraries
+- Google OAuth
+Allows users to share specific data with an application while keeping usernames, passwords and other information private.
 
-## Reminders
+- GSpread
+GSpread 
+A python library that interfaces wit google sheets, allowing program to read and write to google sheets.
+- Colorama 
+This third party library features foreground and background colours and styles for highlighting elements on display. Introduction of colour augments the user experience.
+
+## APIs
+- Google Sheets API
+- Google Drive API
+## Tools and Frameworks
+- Git
+Git was used for version control by utilizing the Gitpod terminal to commit to Git and Push to GitHub.
+
+- GitHub:
+GitHub is used to store the projects code after being pushed from Git.
+
+- Heroku
+Heroku is a container-based cloud Platform as a Service (PaaS). Developers use Heroku to deploy, manage, and scale modern apps.
+
+- VS Code:
+Integrated Development Environment used to develop the Python code for the project.
+
+- Markdown Table of Contents
+Table of contents generated: https://ecotrust-canada.github.io/markdown-toc
+
+- ASCII Art Generator
+Computer text art which is achieved by the smart placement of typed special characters or letters to make a visual shape that is spread over multiple lines of text.
+
+# Features
+## Title
+## Rules
+## Winners Table
+## Login
+## Game 
+### Populate Boards
+### Choose Co-ordintes
+## Game progress
+## End Game
+# Deployment
+## Heroku
+# Validation
+## PEP8
+# Testing
+# Bugs
+# Credits
+# Acknowledgements
+
+
+
+
+
+
 
 * Your code must be placed in the `run.py` file
 * Your dependencies must be placed in the `requirements.txt` file
