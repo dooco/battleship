@@ -391,8 +391,8 @@ def instructions():
 
 def main():
     """
-    Starts a new game, prints top 5 scores, gets player name, set board size, number of ships,
-    resets scores and initialises boards.
+    Starts a new game, prints 5 most recent scores, gets player name, set board size, 
+    number of ships, resets scores and initialises boards.
     """
     welcome()
     win_list = []
