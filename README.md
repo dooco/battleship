@@ -106,19 +106,29 @@ Table of contents generated: https://ecotrust-canada.github.io/markdown-toc
 - ASCII Art Generator
 Computer text art which is achieved by the smart placement of typed special characters or letters to make a visual shape that is spread over multiple lines of text.
 
+- Lucidchart for generating code flow chart
+
+- cloudconvert.com Used to convert numbers spreadsheet to jpg format 
+
 # Features
 
 ## Title
 
 The title, or header, consists of the word 'BATTLESHIP' created by an ascii art generator in bright blue. The text fills the 80 pixel wide terminal and is held in position at the top of the screen by sending a clear screen cypher, followed by the header, when a new table is to be displayed. 
 
+![Battleship header](/images/battleship_header.png)
+
 ## Rules
 
 There is a brief set of instruction displayed below the header. 
 
+![Instructions](/images/instructions.png)
+
 ## Winners Table
 
 At game start the winning table of most recent wins is displayed outlining stages of game and how to play.
+
+![Winner's recent table](/images/win_table.png)
 
 ## Login
 The player is prompted with option to login as new player or an existing player. On selection, of either N or E, the playere is prompted to enter an access code which ensures that the player's information is not accessable to other players. On completion of new player details the player name, access code and score of zero is posted to winning table google sheet.
@@ -177,8 +187,19 @@ The game loops through computer randomly selecting co-ordinates and player input
 # Validation
 ## PEP8
 # Testing
+
+Each section of code was tested manualy at the creation of each section of code entry.
+
+The use of print statements was used to show different variable values and to see if code was working.
+
+Print statements were also used as placeholders for functions and decision checks to show code was called.
+
+![Code and user experience validation](/images/battleship_validation%20.jpg)
+
 # Bugs
 # Credits
+
+Daniel F Moisset github account:dmoisset
 # Acknowledgements
 
 

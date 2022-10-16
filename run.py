@@ -1,16 +1,10 @@
 import random
 
-import re
-
-import pandas as pd
-
 import colorama
 
 from colorama import Fore, Back, Style
 
 colorama.init(autoreset=True)
-
-from clear_screen import clear
 
 import gspread
 
@@ -25,13 +19,23 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("dooco_battleship")
-gc = gspread.service_account(filename="creds.json")
-sh = gc.open_by_url('https://docs.google.com/spreadsheets/d/13TkKpTCjFeVacN9uL_vlk5J778fsGl6Sfg1J8ALHyv4/edit#gid=0')
-ws = sh.worksheet('nam_pas_scr')
-df = pd.DataFrame(ws.get_all_records())
-#
-ALPHA_NUMERO = {"A": 0, "B": 1, "C": 2, "D": 3, "E": 4, "F": 5, "G": 6, "H": 7}
-ONE_TO_EIGHT = ("1", "2", "3", "4", "5", "6", "7", "8")
+
+ALPHA_NUMERO = {"A": 0,
+                "B": 1,
+                "C": 2,
+                "D": 3,
+                "E": 4,
+                "F": 5,
+                "G": 6,
+                "H": 7}
+ONE_TO_EIGHT = ("1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8")
 BOARD_SIZE = 8
 SHIPS = [2, 3, 3, 4, 5]
 PLAYER_COL = colorama.Fore.BLUE
@@ -41,13 +45,12 @@ player_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
 player_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
 computer_board = [[" "] * 8 for _ in range(BOARD_SIZE)]
 computer_board_guess = [[" "] * 8 for _ in range(BOARD_SIZE)]
-player_name_roe = []
+
 
 def print_recent_list(win_list):
     """
-    get the player entries, password and score
+    get the player entries and score
     """
-
     p_list = []
     if len(win_list) > 5:
         p_list = win_list[-6:-1]
@@ -63,36 +66,11 @@ def create_new_player():
     Creates a new user
     """
     while True:
-        new_player = input("Please enter your player name (12 characters max):\n")
+        new_player = input("Enter your player name (12 characters max):\n")
         if len(new_player) < 12 and new_player.isalnum():
             return new_player
             break
         print("Must be alphanumeric and less than 12 characters\n")
-
-
-def get_passwd():
-    """
-    Get a password at least 6 chars, one upper case, one lower case
-    one digit, one sp[ecial character.
-
-    Code credit to stack overflow
-    """
-    while True:
-        pword = input(
-            "Enter an access code at least 6 chars, one upper case,"
-            + " one lower case one digit, one special character:\n "
-        )
-        if re.match(
-            "(?=.{6,})"
-            + "(?=.*[A-Z].*)"
-            + "(?=.*[a-z].*)"
-            + "(?=.*\d.*)"
-            + "(?=.*[\!\@\#\$\%\^\&\*].*)(?=^[\!\@\#\$\%\^\&\*a-zA-Z0-9]+$)"
-            + "^.*$",
-            pword,
-        ):
-            return pword
-            break
 
 
 def update_worksheet(data, worksheet="nam_pas_scr"):
@@ -101,14 +79,21 @@ def update_worksheet(data, worksheet="nam_pas_scr"):
     """
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
-    print(f"{worksheet} worksheet updated successfully\n")
+    
 
-
-# Import random function so that positions on board
-# can be randomised.
-#
-
-
+def write_list_worksheet(user_name, worksheet='nam_pas_scr'):
+    """
+    Writes list to worksheet
+    """
+    
+    win_list = SHEET.worksheet("nam_pas_scr")
+    
+    global player_score
+    global user_name_row
+ 
+    user_name_row = win_list.find(user_name).row
+    player_score = int(win_list.row_values(user_name_row)[2])
+    print(player_score)
 
 def reset():
     """
@@ -118,13 +103,6 @@ def reset():
     player_board_guess = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
     computer_board = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
     computer_board_guess = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
-
-
-def get_a_key(event):
-    while True:
-        if event.key.isalpha() or event.key.isdigit():
-            print(event.key)
-            return event.key
 
 
 def show_board(board):
@@ -199,13 +177,13 @@ def make_sure_ship_fits(board, ship, direction, row, col):
     else:
         if direction == "H":
             if col + ship > (BOARD_SIZE - 1):
-                print("The ship cannot go of the board\nTry another location\n")
+                print("Ship cannot go of the board\nTry another location\n")
                 return False
             else:
                 return True
         else:
             if row + ship > (BOARD_SIZE - 1):
-                print("The ship cannot go of the board\nTry another location\n")
+                print("Ship cannot go of the board\nTry another location\n")
                 return False
             else:
                 return True
@@ -229,12 +207,12 @@ def no_ship_overlap(board, ship, direction, row, col):
         if direction == "H":
             for i in range(col, col + ship):
                 if board[row][i] == "X":
-                    print("Wrong entry, ship cannot go ever another\nTry again\n")
+                    print("Error ship cannot cross another\nTry again\n")
                     return True
         else:
             for i in range(row, row + ship):
                 if board[i][col] == "X":
-                    print("Wrong entry, ship cannot go over another\nTry again\n")
+                    print("Error ship cannot go over another\nTry again\n")
                     return True
         return False
 
@@ -243,7 +221,7 @@ def get_direction():
     while True:
         try:
             direction = input(
-                "Enter (H) horizontal (V) Vertical direction to position your ship\n"
+                "Enter (H)orizontal (V)ertical direction to place your ship\n"
             ).upper()
             while direction not in ("H", "V"):
                 print("Incorrect choice, only H or V")
@@ -270,7 +248,8 @@ def get_position():
             print("Wrong input, select a number between 1 and 8\n")
     while True:
         try:
-            col = input("Enter column you would like to place ship (A to H)\n").upper()
+            col = input("Enter column you would like to place ship (A to H)\n"
+                                                                     ).upper()
             while col not in ALPHA_NUMERO.keys():
                 print("Wrong input, enter A to H\n")
                 break
@@ -300,7 +279,8 @@ def make_move(board):
         else:
             board[row][col] = "@"
     else:
-        row, col = random.randint(0, BOARD_SIZE - 1), random.randint(0, BOARD_SIZE - 1)
+        row = random.randint(0, BOARD_SIZE - 1)
+        col = random.randint(0, BOARD_SIZE - 1)
         if board[row][col] == "@" or board[row][col] == "X":
             make_move(board)
         elif player_board[row][col] == "X":
@@ -333,14 +313,18 @@ def welcome():
     """
     Display  instructions and information about game
     """
-    # clear()
     print('\033[2J')
     print(colorama.Fore.MAGENTA + "-" * 79)
-    print(WELCOME_COL + " ██████   █████  ████████ ████████ ██      ███████ ███████ ██   ██ ██ ██████")
-    print(WELCOME_COL + " ██   ██ ██   ██    ██       ██    ██      ██      ██      ██   ██ ██ ██   ██")
-    print(WELCOME_COL + " ██████  ███████    ██       ██    ██      █████   ███████ ███████ ██ ██████")
-    print(WELCOME_COL + " ██   ██ ██   ██    ██       ██    ██      ██           ██ ██   ██ ██ ██")
-    print(WELCOME_COL + " ██████  ██   ██    ██       ██    ███████ ███████ ███████ ██   ██ ██ ██")
+    print(WELCOME_COL + " ██████   █████  ████████ ████████ ██      ███████" +
+                                                " ███████ ██   ██ ██ ██████")
+    print(WELCOME_COL + " ██   ██ ██   ██    ██       ██    ██      ██     " +
+                                                " ██      ██   ██ ██ ██   ██")
+    print(WELCOME_COL + " ██████  ███████    ██       ██    ██      █████  " +
+                                                " ███████ ███████ ██ ██████")
+    print(WELCOME_COL + " ██   ██ ██   ██    ██       ██    ██      ██     " +
+                                                "      ██ ██   ██ ██ ██")
+    print(WELCOME_COL + " ██████  ██   ██    ██       ██    ███████ ███████" +
+                                                " ███████ ██   ██ ██ ██")
     print(colorama.Fore.MAGENTA + "-" * 79)
 
 def you_win():
@@ -358,29 +342,31 @@ def you_win():
 def you_loose():
     print(colorama.Fore.RED + "-" * 79)
     print("\n")
-    print("    ██    ██  ██████  ██    ██     ██       ██████   ██████  ███████ ███████")
-    print("     ██  ██  ██    ██ ██    ██     ██      ██    ██ ██    ██ ██      ██")
-    print("      ████   ██    ██ ██    ██     ██      ██    ██ ██    ██ ███████ █████")
-    print("       ██    ██    ██ ██    ██     ██      ██    ██ ██    ██      ██ ██")
-    print("       ██     ██████   ██████      ███████  ██████   ██████  ███████ ███████")
+    print("    ██    ██  ██████  ██    ██     ██       ██████   ██████ " +
+            " ███████ ███████")
+    print("     ██  ██  ██    ██ ██    ██     ██      ██    ██ ██    ██" +
+            " ██      ██")
+    print("      ████   ██    ██ ██    ██     ██      ██    ██ ██    ██" +
+            " ███████ █████")
+    print("       ██    ██    ██ ██    ██     ██      ██    ██ ██    ██" +
+            "      ██ ██")
+    print("       ██     ██████   ██████      ███████  ██████   ██████ " +
+            " ███████ ███████")
     print("\n")
     print(colorama.Fore.RED + "-" * 79)
-
-
-
-    
-  
-    print(colorama.Fore.RED  +  "=" * 79)
 
 
 def instructions():
     print(colorama.Fore.RED + "=" * 79)
     print(PLAYER_COL + "Instructions for Battleship")
     print(COMPUTER_COL + "=" * 79)
-    print(PLAYER_COL + "You have 5 ships, One with 2 spaces, two with 3 spaces,")
+    print(PLAYER_COL + "You have 5 ships, One with 2 spaces, " +
+                                              "two with 3 spaces,")
     print(PLAYER_COL +  "one with 4 spaces & one with 5 spaces on board")
-    print(PLAYER_COL + "First enter direction (H for horizontal or V for Vertical) and then ")
-    print(PLAYER_COL + "co-ordinates (digit between 1 & 8 and letter between A & H) for all 5 ships")
+    print(PLAYER_COL + "First enter direction (H for horizontal " +
+            "for V for Vertical) and then ")
+    print(PLAYER_COL + "co-ordinates (digit between 1 & 8 and letter" +
+            " between A & H) for all 5 ships")
     print(PLAYER_COL + "Player must guess co-ordinates of opponent's ships")
     print(
         PLAYER_COL
@@ -396,8 +382,8 @@ def instructions():
 
 def main():
     """
-    Starts a new game, prints 5 most recent scores, gets player name, set board size, 
-    number of ships, resets scores and initialises boards.
+    Starts a new game, prints 5 most recent scores, gets player name, 
+    set board size, number of ships, resets scores and initialises boards.
     """
     welcome()
     win_list = []
@@ -406,41 +392,33 @@ def main():
     for i in score:
         win_list.append(i)
     print_recent_list(win_list)
+    print(win_list)
+    write_list_worksheet("Mathew")
+
+    quit()
     while True:
         choice = input("Existing player (E) or New player (N). Enter E or N\n")
         if choice.upper() in ["E", "N"]:
             break
-
     if choice.upper() == "N":
         new_player = create_new_player()
         matching = [s for s in win_list if new_player in s]
         if not matching:
             print(PLAYER_COL + " Y O U R   N A M E  I S   A V A I L A B L E")
-            pword = get_passwd()
+            pword = new_player + "1!"  #  have passcode
             data = [new_player, pword, "0"]
             update_worksheet(data, "nam_pas_scr")
-
-    while True:
-        player_name = create_new_player()
-        matching = [s for s in win_list if player_name in s]
-        if matching:
-            print("Y O U   A R E   O N   T H E   P L A Y E R  L I S T")
-            break
-            pword = get_passwd()
-            player_name_roe = df.loc[df["nam"] == player_name]
-            #player_name_roe = df.loc(player_name)
-            print(player_name_roe)
-            player_access = player_name_roe[2]
-            player_score = int(player_name_roe[3])
-            if pword == player_access:
-                print(f"Player {player_name} you have won {player_score} games")
-                break
+    elif choice.upper() == "E":
+        while True:
+            player_name = create_new_player()
+            matching = [s for s in win_list if player_name in s]
+            if matching:
+                break         
     welcome()
     instructions()
     place_ships(computer_board)
     print("Place your ships")
     place_ships(player_board)
-
     while True:
         while True:
             welcome()
