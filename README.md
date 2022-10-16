@@ -60,6 +60,8 @@ With a basic terminal as presented for this project the graphics for headers and
 ## Technical Design
 
 ### Flow Diagram
+
+![Flow Chart](/images/battleship_flow_chart.png)
 ### Data Models
 
 # Technologies Used
@@ -171,7 +173,7 @@ The game loops through computer randomly selecting co-ordinates and player input
 
 - Clicking on button will bring you to deployed app where you press 'Run Program' to run your app.
 
-## Heroku
+
 # Validation
 ## PEP8
 # Testing
