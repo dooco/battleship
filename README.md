@@ -1,5 +1,7 @@
 
 # BATTLESHIP
+ 
+
 
 - [BATTLESHIP](#battleship)
 - [Goals](#goals)
@@ -45,6 +47,10 @@
 - [Acknowledgements](#acknowledgements)
 
 <small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+# Live view of Heroku project [here](https://dooco-battleship.herokuapp.com/)
+
+# Github [here](https://github.com/dooco/battleship)
 
 # Goals
 
@@ -264,9 +270,14 @@ After testing it a bug became evident in that when deciding to play again the re
 
 # Credits
 
-Fot insights on how to set up the game: Daniel F Moisset github account:dmoisset
+Fot insights on how to set up the game: Daniel F Moisset and Dan Pearce
+
 
 The Code Institute's Portfolio Project 3 Scope video
+
+Stackoverflow.com for valued information on routines and errors during development
+
+
 
 # Acknowledgements
 
