@@ -1,7 +1,50 @@
 
 # BATTLESHIP
 
-# Table of  Contents
+- [BATTLESHIP](#battleship)
+- [Goals](#goals)
+  * [User Goals](#user-goals)
+  * [Owner Goals](#owner-goals)
+- [User Experience](#user-experience)
+  * [User Stories](#user-stories)
+    + [First Time User](#first-time-user)
+    + [Returning User](#returning-user)
+    + [Regular User](#regular-user)
+- [User Manual](#user-manual)
+- [Design](#design)
+    + [Colours](#colours)
+    + [Graphics](#graphics)
+  * [Technical Design](#technical-design)
+    + [Flow Diagram](#flow-diagram)
+    + [Data Models](#data-models)
+- [Technologies Used](#technologies-used)
+  * [Languages](#languages)
+  * [Libraries](#libraries)
+    + [Built in Libraries](#built-in-libraries)
+    + [Third Party Libraries](#third-party-libraries)
+  * [APIs](#apis)
+  * [Tools and Frameworks](#tools-and-frameworks)
+- [Features](#features)
+  * [Title](#title)
+  * [Rules](#rules)
+  * [Winners Table](#winners-table)
+  * [Login](#login)
+  * [Game](#game)
+    + [Populate Boards](#populate-boards)
+    + [Choose Co-ordintes](#choose-co-ordintes)
+  * [Game progress](#game-progress)
+  * [End Game](#end-game)
+- [Deployment](#deployment)
+  * [Heroku Set-up](#heroku-set-up)
+- [Validation](#validation)
+  * [PEP8](#pep8)
+- [Testing](#testing)
+- [Bugs](#bugs)
+- [Limitations and further improvements](#limitations-and-further-improvements)
+- [Credits](#credits)
+- [Acknowledgements](#acknowledgements)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
 
 # Goals
 
@@ -62,7 +105,11 @@ With a basic terminal as presented for this project the graphics for headers and
 ### Flow Diagram
 
 ![Flow Chart](/images/battleship_flow_chart.png)
+
 ### Data Models
+
+The board layout consisted of a list of list. As the board was configures as 8 x 8 the strings consisted of eight space characters in each row and with eight rows on start up. This list of lists was used for four boards used in the game: player_board, player_board_guess, computer_board, computer_board_guess. Each board are populates with hit or miss characters "X" or "@" as the game progresses. Each of the guess boards are printed on teminal (in user friendly output) throughout game to give palyer feedback.
+
 
 # Technologies Used
 ## Languages
@@ -75,12 +122,16 @@ With a basic terminal as presented for this project the graphics for headers and
 - random
 - 
 ### Third Party Libraries
+
 - Google OAuth
+
 Allows users to share specific data with an application while keeping usernames, passwords and other information private.
 
 - GSpread
+
 GSpread, a library that interfaces wit google sheets, allowing program to read and write to google sheets.
 - Colorama 
+
 This third party library features foreground and background colours and styles for highlighting elements on display. Introduction of colour augments the user experience.
 
 ## APIs
@@ -185,7 +236,12 @@ The game loops through computer randomly selecting co-ordinates and player input
 
 
 # Validation
+
+
 ## PEP8
+
+As the PEP8 format checker was not available the VS interpreter was used to validate code.
+
 # Testing
 
 Each section of code was tested manualy at the creation of each section of code entry.
@@ -197,37 +253,23 @@ Print statements were also used as placeholders for functions and decision check
 ![Code and user experience validation](/images/battleship_validation%20.jpg)
 
 # Bugs
+After testing it a bug became evident in that when deciding to play again the reset_boards function didnt clear boards.
+
+# Limitations and further improvements
+
+- For further improvements the introduction of computer intelligence where computer's make_move choice would have some next space algorithm built in instead of just random choice.
+
+- Log in function where user can log their username and password and game would keep a record of scores securely.
+
+
 # Credits
 
-Daniel F Moisset github account:dmoisset
+Fot insights on how to set up the game: Daniel F Moisset github account:dmoisset
+
+The Code Institute's Portfolio Project 3 Scope video
+
 # Acknowledgements
 
+My Mentor, Ronan McClelland , for continuous helpful feedback.
 
-
-
-
-
-
-* Your code must be placed in the `run.py` file
-* Your dependencies must be placed in the `requirements.txt` file
-* Do not edit any of the other files or your code may not deploy properly
-
-## Creating the Heroku app
-
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
-
-1. `heroku/python`
-2. `heroku/nodejs`
-
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
-
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
------
-Happy coding!
+Tutor support at Code Institute for their support.

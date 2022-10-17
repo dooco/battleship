@@ -1,14 +1,11 @@
 import random
 
 import colorama
-
 from colorama import Fore, Back, Style
-
 colorama.init(autoreset=True)
-
 import gspread
-
 from google.oauth2.service_account import Credentials
+from google.oauth2 import service_account
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -19,6 +16,12 @@ CREDS = Credentials.from_service_account_file("creds.json")
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open("dooco_battleship")
+ws = SHEET.worksheet('nam_pas_scr') 
+hi_score = []
+score_table = []
+player_score = None
+player_name = None
+player_name_row = None
 
 ALPHA_NUMERO = {"A": 0,
                 "B": 1,
@@ -73,31 +76,46 @@ def create_new_player():
         print("Must be alphanumeric and less than 12 characters\n")
 
 
+def get_player_name(win_list):
+    while True:
+        choice = input("Existing player (E) or New player (N). Enter E or N\n")
+        if choice.upper() in ["E", "N"]:
+            break
+    if choice.upper() == "N":
+        new_player = create_new_player()
+        matching = [s for s in win_list if new_player in s]
+        if not matching:
+            print(PLAYER_COL + " Y O U R   N A M E  I S   A V A I L A B L E")
+            #  following line for future password inplementation 
+            pword = new_player + "1!" 
+            data = [new_player, pword, "0"]
+            update_worksheet(data, "nam_pas_scr")
+            return new_player
+    elif choice.upper() == "E":
+        while True:
+            player_name = create_new_player()
+            matching = [s for s in win_list if player_name in s]
+            if matching:
+                print(PLAYER_COL + " Y O U R   N A M E  I S   O N   L I S T")
+                user_name_row = score_table.find(player_name).row
+                player_score = int(score_table.row_values(user_name_row)[2])
+                return player_name
+                break
+
+
 def update_worksheet(data, worksheet="nam_pas_scr"):
     """
     Update worksheet
     """
-    worksheet_to_update = SHEET.worksheet(worksheet)
-    worksheet_to_update.append_row(data)
-    
-
-def write_list_worksheet(user_name, worksheet='nam_pas_scr'):
-    """
-    Writes list to worksheet
-    """
-    
-    win_list = SHEET.worksheet("nam_pas_scr")
-    
-    global player_score
-    global user_name_row
- 
-    user_name_row = win_list.find(user_name).row
+    win_list = SHEET.worksheet(worksheet)
+    win_list.append_row(data)
+    user_name_row = win_list.find(data[0]).row
     player_score = int(win_list.row_values(user_name_row)[2])
-    print(player_score)
 
-def reset():
+
+def reset_boards():
     """
-    Reset boards data for start and to play again
+    Reset boards data for to play again
     """
     player_board = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
     player_board_guess = [[" "] * BOARD_SIZE for _ in range(BOARD_SIZE)]
@@ -330,11 +348,11 @@ def welcome():
 def you_win():
     print(colorama.Fore.MAGENTA + "-" * 79)
     print("\n")
-    print("    ██    ██  ██████  ██    ██     ██     ██ ██ ███    ██")
-    print("     ██  ██  ██    ██ ██    ██     ██     ██ ██ ████   ██")
-    print("      ████   ██    ██ ██    ██     ██  █  ██ ██ ██ ██  ██")
-    print("       ██    ██    ██ ██    ██     ██ ███ ██ ██ ██  ██ ██")
-    print("       ██     ██████   ██████       ███ ███  ██ ██   ████")
+    print(WELCOME_COL + "    ██    ██  ██████  ██    ██     ██     ██ ██ ███    ██")
+    print(WELCOME_COL + "     ██  ██  ██    ██ ██    ██     ██     ██ ██ ████   ██")
+    print(WELCOME_COL + "      ████   ██    ██ ██    ██     ██  █  ██ ██ ██ ██  ██")
+    print(WELCOME_COL + "       ██    ██    ██ ██    ██     ██ ███ ██ ██ ██  ██ ██")
+    print(WELCOME_COL + "       ██     ██████   ██████       ███ ███  ██ ██   ████")
     print("\n")
     print(colorama.Fore.MAGENTA + "-" * 79)
 
@@ -342,15 +360,15 @@ def you_win():
 def you_loose():
     print(colorama.Fore.RED + "-" * 79)
     print("\n")
-    print("    ██    ██  ██████  ██    ██     ██       ██████   ██████ " +
+    print(WELCOME_COL + "    ██    ██  ██████  ██    ██     ██       ██████   ██████ " +
             " ███████ ███████")
-    print("     ██  ██  ██    ██ ██    ██     ██      ██    ██ ██    ██" +
+    print(WELCOME_COL + "     ██  ██  ██    ██ ██    ██     ██      ██    ██ ██    ██" +
             " ██      ██")
-    print("      ████   ██    ██ ██    ██     ██      ██    ██ ██    ██" +
+    print(WELCOME_COL + "      ████   ██    ██ ██    ██     ██      ██    ██ ██    ██" +
             " ███████ █████")
-    print("       ██    ██    ██ ██    ██     ██      ██    ██ ██    ██" +
+    print(WELCOME_COL + "       ██    ██    ██ ██    ██     ██      ██    ██ ██    ██" +
             "      ██ ██")
-    print("       ██     ██████   ██████      ███████  ██████   ██████ " +
+    print(WELCOME_COL + "       ██     ██████   ██████      ███████  ██████   ██████ " +
             " ███████ ███████")
     print("\n")
     print(colorama.Fore.RED + "-" * 79)
@@ -388,14 +406,10 @@ def main():
     welcome()
     win_list = []
     hi_score = SHEET.worksheet("nam_pas_scr")
-    score = hi_score.get_values()
-    for i in score:
+    score_table = hi_score.get_values()
+    for i in score_table:
         win_list.append(i)
-    print_recent_list(win_list)
-    print(win_list)
-    write_list_worksheet("Mathew")
-
-    quit()
+    print_recent_list(win_list)    
     while True:
         choice = input("Existing player (E) or New player (N). Enter E or N\n")
         if choice.upper() in ["E", "N"]:
@@ -432,9 +446,19 @@ def main():
             welcome()
             show_board(player_board_guess)
             you_win()
-            #           score_plus()
-            #              increase player score on table
-            quit()
+            #  Increments player score to Google Sheet
+            player_name_row = ws.find(player_name).row
+            player_score = int(ws.row_values(player_name_row)[2])
+            player_score += 1
+            ws.update_cell(player_name_row, 3, +
+                                    int(player_score))
+            while True:
+                choice = input("Play again (Y/N)\n")
+                if choice.upper() == "Y":
+                    reset_boards()
+                    main()
+                elif choice.upper() == "N":
+                    quit()
         while True:
             make_move(computer_board_guess)
             break
@@ -442,7 +466,13 @@ def main():
             welcome()
             show_board(computer_board_guess)
             you_loose()
-            quit()
+            while True:
+                choice = input("Play again (Y/N)\n")
+                if choice.upper() == "Y":
+                    reset_boards()
+                    main()
+                elif choice.upper() == "N":
+                    quit()
 
-
+                    
 main()
