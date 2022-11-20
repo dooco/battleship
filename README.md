@@ -2,6 +2,7 @@
 # BATTLESHIP
  
 
+# Live view of project [here](https://dooco-battleship.herokuapp.com/)
 
 - [BATTLESHIP](#battleship)
 - [Goals](#goals)
